@@ -79,10 +79,17 @@ teamSummary["KDA"] = (teamSummary["kills"] + teamSummary["assists"]) / teamSumma
 # format DataFrame
 teamSummary = teamSummary.set_index("player")
 teamSummary.columns = ["winRate", "kills", "deaths", "assists", "gamesPlayed", "KDA"]
+
 cols = teamSummary.columns.tolist()
-teamSummary = teamSummary[["gamesPlayed", "win", "kills", "deaths", "assists", "KDA"]]
+teamSummary = teamSummary[
+    ["gamesPlayed", "winRate", "kills", "deaths", "assists", "KDA"]
+]
 teamSummary.index.name = None
 teamSummary.sort_values("KDA", ascending="false")
+teamSummary = teamSummary.round(2)
+teamSummary
+import numpy as np
 
+np.round(teamSummary, decimals=2)
 teamSummary.to_csv("output/teamSummary.csv")
 # for player in teamPlayers:
