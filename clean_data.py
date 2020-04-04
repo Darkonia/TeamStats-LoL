@@ -36,9 +36,11 @@ for _index, match in df.iterrows():
             playerStats[player].append(stats)
 
 # save allStats
-for player in teamPlayers:
-    playerStats[player] = pd.DataFrame.from_dict(playerStats[player])
 
+for player in teamPlayers:
+
+    playerStats[player] = pd.DataFrame.from_dict(playerStats[player])
+    playerStats[player]["counter"] = 1
     playerStats[player].to_csv("output/allStats_" + player + ".csv")
 
     # drop_cols = [c for c in playerStats[player].columns if c.lower()[:4]
@@ -58,9 +60,29 @@ for player in teamPlayers:
     ].to_csv("output/quickReview_" + player + ".csv")
 
 
-# create summary
-playerSummary = {}
+# create team summary
+teamSummary = []
 for player in teamPlayers:
-    playerSummary[player] = []
+    means = playerStats[player].mean()
+    means = means[["win", "kills", "deaths", "assists"]]
+    means["gamesPlayed"] = playerStats[player].sum()["counter"]
+    means
+    means["player"] = player
+    teamSummary.append(means.to_frame().T)
 
+
+teamSummary = pd.concat(teamSummary)
+teamSummary["KDA"] = (teamSummary["kills"] + teamSummary["assists"]) / teamSummary[
+    "deaths"
+]
+
+# format DataFrame
+teamSummary = teamSummary.set_index("player")
+teamSummary.columns = ["winRate", "kills", "deaths", "assists", "gamesPlayed", "KDA"]
+cols = teamSummary.columns.tolist()
+teamSummary = teamSummary[["gamesPlayed", "win", "kills", "deaths", "assists", "KDA"]]
+teamSummary.index.name = None
+teamSummary.sort_values("KDA", ascending="false")
+
+teamSummary.to_csv("output/teamSummary.csv")
 # for player in teamPlayers:
