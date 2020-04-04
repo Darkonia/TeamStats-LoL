@@ -101,33 +101,15 @@ accountId = requestSummonerData(summonerName, APIKey)["accountId"]
 # get Matches
 matches = requestMatchByAccountId(accountId, season, queueId, APIKey)
 
-
+# create DataFrame
 matches = pd.DataFrame.from_dict(matches["matches"])
 
-matches
-
-
+# Filter by date
 matches = filterMatchesByDate(matches, startDate)
 
-start = datetime.now()
+# request matches and filter by at least 5 team member is a team
 filteredMatches = filterMatches(matches, 5, APIKey)
-print(datetime.now() - start)
 
-filteredMatches
-
-# Dataframe with relevant matches
-df = pd.DataFrame.from_dict(filteredMatches)
-players = []
-for p in filteredMatches[8]["participants"]:
-    players.append(p)
-pd.DataFrame.from_dict(players)
-participantIdentities = df["participantIdentities"]
-df
-participantIdentities[0]
-pd.DataFrame.from_dict(filteredMatches[8]["participantIdentities"])
-
-
+# export as pickle
 with open("data/filteredMatches.pickle", "wb") as out_file:
-    pickle.dump(filteredMatches, out_file)
-with open("data/.pickle", "wb") as out_file:
     pickle.dump(filteredMatches, out_file)

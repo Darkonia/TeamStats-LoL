@@ -38,11 +38,24 @@ for _index, match in df.iterrows():
 # save allStats
 for player in teamPlayers:
     playerStats[player] = pd.DataFrame.from_dict(playerStats[player])
-    # drop_cols = [c for c in playerStats[player].columns if c.lower()[:4]
-    # in ['perk', 'stat', 'play', 'item', 'tota', '2.se']]
-    # drop_cols.append('participantId')
-    # playerStats[player] = playerStats[player].drop(columns=drop_cols)
+
     playerStats[player].to_csv("output/allStats_" + player + ".csv")
+
+    # drop_cols = [c for c in playerStats[player].columns if c.lower()[:4]
+    #     in ['perk', 'stat', 'play', 'item', 'tota', 'larg', ']
+    # drop_cols.extend(['participantId'])
+    playerStats[player][
+        [
+            "win",
+            "kills",
+            "deaths",
+            "assists",
+            "totalDamageDealt",
+            "totalDamageTaken",
+            "goldEarned",
+            "visionScore",
+        ]
+    ].to_csv("output/quickReview_" + player + ".csv")
 
 
 # create summary
