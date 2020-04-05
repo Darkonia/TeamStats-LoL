@@ -1,0 +1,38 @@
+
+=================================
+
+                            (0)
+---------------------------------
+Intercept                  -0.46
+                           (0.30)
+teamId[T.Red]              -1.59
+                           (0.43)
+C(firstBlood)[T.True]      0.23
+                           (0.13)
+C(firstTower)[T.True]      -4.29
+                           (2.02)
+C(firstInhibitor)[T.True]  4.65
+                           (2.52)
+C(firstBaron)[T.True]      -4.56
+                           (1.56)
+C(firstDragon)[T.True]     0.30
+                           (0.12)
+C(firstRiftHerald)[T.True] 4.92
+                           (2.05)
+towerKills                 0.21
+                           (0.16)
+inhibitorKills             -1.68
+                           (0.60)
+baronKills                 3.70
+                           (1.41)
+dragonKills                -0.45
+                           (0.12)
+riftHeraldKills            0.41
+                           (0.29)
+R-squared                  0.92
+                           0.99
+N                          13
+R2                         0.99
+=================================
+Standard errors in parentheses.
+* p<.1, ** p<.05, ***p<.01

@@ -40,7 +40,7 @@ mod = smf.ols(
 res1 = mod.fit()
 
 
-textfile = open("output/team/regressions/win_on_teamStats.html", "w")
+textfile = open("output/team/regressions/win_on_teamStats.txt", "w")
 
 print(
     summary_col(
@@ -52,7 +52,7 @@ print(
             "N": lambda x: "{:d}".format(int(x.nobs)),
             "R2": lambda x: f"{x.rsquared:.2f}",
         },
-    ).as_latex()
+    ).as_text()
 )
 textfile.write(
     summary_col(
@@ -64,7 +64,7 @@ textfile.write(
             "N": lambda x: "{:d}".format(int(x.nobs)),
             "R2": lambda x: f"{x.rsquared:.2f}",
         },
-    ).as_html()
+    ).as_text()
 )
 
 textfile.close()
