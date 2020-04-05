@@ -40,11 +40,14 @@ for _index, match in matches.iterrows():
     date = datetime.fromtimestamp(date / 1000)
     myTeam = int(getMyTeam(match, teamPlayers) / 100 - 1)
     matchStats = match.teams[myTeam]
-    matchStats
-    print(pd.DataFrame.from_dict(matchStats))
     teamStats[date] = pd.DataFrame.from_dict(matchStats, orient="index").T
 
 teamStats = pd.concat(teamStats)
+teamStats.loc[teamStats["win"] != "Win", "win"] = 0
+teamStats.loc[teamStats["win"] == "Win", "win"] = 1
+teamStats.loc[teamStats["teamId"] != 100, "teamId"] = "Red"
+teamStats.loc[teamStats["teamId"] == 100, "teamId"] = "Blue"
+teamStats["counter"] = 1
 teamStats.to_csv("data/raw/teamStats.csv")
 
 
