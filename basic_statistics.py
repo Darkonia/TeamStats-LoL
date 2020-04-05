@@ -45,7 +45,7 @@ ts_byWin = ts_byWin[
 ]
 ts_byWin["counter"] = teamStats.groupby("win").sum()["counter"]
 ts_byWin = ts_byWin.astype(float).round(2)
-ts_byWin.to_csv("output/team/teamStats_ByWin")
+ts_byWin.to_csv("output/team/teamStats_ByWin.csv")
 ts_byWin
 
 
@@ -70,7 +70,7 @@ ts_bySide = ts_bySide[
 ]
 ts_bySide["counter"] = teamStats.groupby("teamId").sum()["counter"]
 ts_bySide = ts_bySide.astype(float).round(2)
-ts_bySide.to_csv("output/team/teamStats_BySide")
+ts_bySide.to_csv("output/team/teamStats_BySide.csv")
 
 
 teamStats.groupby(["teamId", "win"]).mean().unstack().plot()
