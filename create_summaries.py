@@ -87,6 +87,7 @@ quickReview_Team.columns = ["Team Placeholder"]
 quickReview_Team = quickReview_Team.astype(float).round(2)
 quickReview_Team.to_csv("output/team/quickReview_TeamStats.csv")
 
+
 # create teamSummary
 teamSummary = []
 for player in teamPlayers:
@@ -148,5 +149,5 @@ teamSummary.index.name = None
 
 teamSummary = teamSummary.sort_values(by="KDA", ascending=False)
 teamSummary = teamSummary.astype(float).round(2)
-teamSummary
+
 teamSummary.to_csv("output/team/teamSummary.csv")
