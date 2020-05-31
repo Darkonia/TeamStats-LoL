@@ -11,7 +11,6 @@ teamPlayers = ["Sopapiglobo", "Darkonia", "Scσrpiσn", "Blackéyé", "Flokii", 
 
 # load raw data
 teamStats = pd.read_csv("data/raw/teamStats.csv")
-teamStats = teamStats.drop(columns=["Unnamed: 1"])
 teamStats.rename(columns={"Unnamed: 0": "date"}, inplace=True)
 teamStats.set_index("date")
 
@@ -37,6 +36,40 @@ mod = smf.ols(
     inhibitorKills + baronKills + dragonKills + riftHeraldKills",
     data=teamStats,
 )
+res1 = mod.fit()
+
+
+textfile = open("output/team/regressions/win_on_teamStats.txt", "w")
+
+print(
+    summary_col(
+        [res1],
+        stars=True,
+        float_format="%0.2f",
+        model_names=["\n(0)"],
+        info_dict={
+            "N": lambda x: "{:d}".format(int(x.nobs)),
+            "R2": lambda x: f"{x.rsquared:.2f}",
+        },
+    ).as_text()
+)
+textfile.write(
+    summary_col(
+        [res1],
+        stars=True,
+        float_format="%0.2f",
+        model_names=["\n(0)"],
+        info_dict={
+            "N": lambda x: "{:d}".format(int(x.nobs)),
+            "R2": lambda x: f"{x.rsquared:.2f}",
+        },
+    ).as_text()
+)
+
+textfile.close()
+
+####
+mod = smf.ols(formula="win ~ teamId + baronKills + dragonKills ", data=teamStats,)
 res1 = mod.fit()
 
 

@@ -12,7 +12,7 @@ teamPlayers = ["Sopapiglobo", "Darkonia", "Scσrpiσn", "Blackéyé", "Flokii", 
 APIKey = "RGAPI-2045c3a3-0d61-40b5-a741-869067293ee1"
 season = "13"
 queueId = ["440", "700"]
-startDate = "28 March, 2020"
+startDate = "30 March, 2020"
 
 
 # Get account details by providing the account name
@@ -101,12 +101,12 @@ accountId = requestSummonerData(summonerName, APIKey)["accountId"]
 # get Matches
 matchesFlex = requestMatchByAccountId(accountId, season, queueId[0], APIKey)
 matchesClash = requestMatchByAccountId(accountId, season, queueId[1], APIKey)
-
+matchesClash
 # create DataFrame
 matchesFlex = pd.DataFrame.from_dict(matchesFlex["matches"])
 matchesClash = pd.DataFrame.from_dict(matchesClash["matches"])
 matches = pd.concat([matchesFlex, matchesClash])
-matches = matchesFlex
+
 # Filter by date
 matches = filterMatchesByDate(matches, startDate)
 

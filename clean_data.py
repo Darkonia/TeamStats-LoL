@@ -1,4 +1,5 @@
 import datetime
+import json
 import pickle
 
 import numpy as np
@@ -15,6 +16,23 @@ def getParticipantById(participants, id):
     for p in participants:
         if p["participantId"] == id:
             return p
+
+
+# decoding RitoAPI
+def getChampionNameById(championId):
+    with open("data/Riot/champion.json") as f:
+        data = json.load(f)
+        df = pd.DataFrame.from_dict(data["data"]).T.set_index("key")
+
+    return df.query('key == "' + str(championId) + '"')["name"][0]
+
+
+def getQueueNameById(queueId):
+    with open("data/Riot/queues.json") as f:
+        data = json.load(f)
+        df = pd.DataFrame.from_dict(data).set_index("queueId")
+        df.query("queueId == " + str(queueId))["description"]
+    return df.query("queueId == " + str(queueId))["description"][0]
 
 
 def sortByWeek(matches, startDate):
@@ -53,21 +71,21 @@ def getMyTeam(match, teamPlayers):
 
 
 teamPlayers = ["Sopapiglobo", "Darkonia", "Scσrpiσn", "Blackéyé", "Flokii", "Strucio"]
-startDate = "28 March, 2020"
+startDate = "30 March, 2020"
 # Load scrapped data
 data = pickle.load(open("data/filteredMatches.pickle", "rb"))
 matches = pd.DataFrame.from_dict(data)
 matches = sortByWeek(matches, startDate)
 
-
+matches
 # team stats
 teamStats = {}
 for _index, match in matches.iterrows():
     date = match["gameCreation"]
-    queueId = match["queueId"]
     myTeam = int(getMyTeam(match, teamPlayers) / 100 - 1)
     matchStats = match.teams[myTeam]
-    matchStats["queueId"] = queueId
+    matchStats["queueId"] = match["queueId"]
+    matchStats["week"] = match["week"]
     teamStats[date] = pd.DataFrame.from_dict(matchStats, orient="index").T
 
 booleans = [
@@ -98,18 +116,18 @@ teamStats.loc[teamStats["teamId"] != 100, "teamId"] = "Red"
 teamStats.loc[teamStats["teamId"] == 100, "teamId"] = "Blue"
 teamStats["counter"] = 1
 teamStats["gameCreation"] = teamStats.index
-teamStats = sortByWeek(teamStats, startDate)
+teamStats
 
 teamStats[booleans] = teamStats[booleans].astype(int)
 teamStats.to_csv("data/raw/teamStats.csv")
+teamStats
 
-
-t = teamStats.drop(["gameCreation", "vilemawKills", "dominionVictoryScore"], axis=1)
-t[t["queueId"] == 700].groupby("week").mean().plot()
-s = t.groupby(["queueId", "week"]).sum()
-s["winrate"] = s["win"] / s["counter"]
-s
-s.unstack("queueId")["winrate"].plot(style=".-", marker="o")
+# t = teamStats.drop(["gameCreation", "vilemawKills", "dominionVictoryScore"], axis=1)
+# t[t["queueId"] == 700].groupby("week").mean().plot()
+# s = t.groupby(["queueId", "week"]).sum()
+# s["winrate"] = s["win"] / s["counter"]
+# s
+# s.unstack("queueId")["winrate"].plot(style=".-", marker="o")
 
 
 # prepare list with playerStats and playerTimeline
@@ -128,13 +146,21 @@ for _index, match in matches.iterrows():
             p = getParticipantById(match["participants"], id)
 
             playerStats[player][date] = p["stats"]
-            playerStats[player][date]["championId"] = p["championId"]
-            playerStats[player][date]["queueId"] = match["queueId"]
+            playerStats[player][date]["championId"] = getChampionNameById(
+                p["championId"]
+            )
+            playerStats[player][date]["queueId"] = np.where(
+                match["queueId"] == 440, "Flex", "Clash"
+            )
             playerStats[player][date]["week"] = match["week"]
 
             playerTimelines[player][date] = p["timeline"]
-            playerTimelines[player][date]["championId"] = p["championId"]
-            playerTimelines[player][date]["queueId"] = match["queueId"]
+            playerTimelines[player][date]["championId"] = getChampionNameById(
+                p["championId"]
+            )
+            playerTimelines[player][date]["queueId"] = np.where(
+                match["queueId"] == 440, "Flex", "Clash"
+            )
             playerTimelines[player]
 
 

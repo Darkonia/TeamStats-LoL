@@ -5,7 +5,7 @@ teamPlayers = ["Sopapiglobo", "Darkonia", "Scσrpiσn", "Blackéyé", "Flokii", 
 
 # load raw data
 teamStats = pd.read_csv("data/raw/teamStats.csv")
-teamStats = teamStats.drop(columns=["Unnamed: 1"])
+
 teamStats.rename(columns={"Unnamed: 0": "date"}, inplace=True)
 teamStats.set_index("date")
 
@@ -26,7 +26,7 @@ for player in teamPlayers:
 
 # teamStats_by_win
 ts_byWin = teamStats.groupby("win").mean()
-ts_byWin.index.name = None
+ts_byWin
 ts_byWin = ts_byWin[
     [
         "firstBlood",
@@ -45,15 +45,19 @@ ts_byWin = ts_byWin[
 ]
 ts_byWin["counter"] = teamStats.groupby("win").sum()["counter"]
 ts_byWin = ts_byWin.astype(float).round(2)
+ts_byWin = ts_byWin.sort_values(by=["win"], ascending=False)
 ts_byWin.to_csv("output/team/teamStats_ByWin.csv")
 ts_byWin
 
 
 # teamStats_by_side
 ts_bySide = teamStats.groupby("teamId").mean()
-ts_bySide.index.name = None
+ts_bySide["counter"] = teamStats.groupby("teamId").sum()["counter"]
+
 ts_bySide = ts_bySide[
     [
+        "counter",
+        "win",
         "firstBlood",
         "firstTower",
         "firstInhibitor",
@@ -65,12 +69,28 @@ ts_bySide = ts_bySide[
         "baronKills",
         "dragonKills",
         "riftHeraldKills",
-        "counter",
     ]
 ]
-ts_bySide["counter"] = teamStats.groupby("teamId").sum()["counter"]
-ts_bySide = ts_bySide.astype(float).round(2)
-ts_bySide.to_csv("output/team/teamStats_BySide.csv")
+ts_bySide.columns = [
+    "gamesPlayed",
+    "win",
+    "firstBlood",
+    "firstTower",
+    "firstInhibitor",
+    "firstBaron",
+    "firstDragon",
+    "firstRiftHerald",
+    "towerKills",
+    "inhibitorKills",
+    "baronKills",
+    "dragonKills",
+    "riftHeraldKills",
+]
 
+
+ts_bySide = ts_bySide.astype(float).round(2)
+ts_bySide.index.name = None
+ts_bySide.to_csv("useful/team/teamStats_BySide.csv")
+ts_bySide
 
 teamStats.groupby(["teamId", "win"]).mean().unstack().plot()
