@@ -1,4 +1,5 @@
-,win,kills,deaths,assists,totalDamageDealt,totalDamageTaken,goldEarned,visionScore,creepsPerMinDeltas@0-10,creepsPerMinDeltas@10-20,xpPerMinDeltas@0-10,csDiffPerMinDeltas@0-10,csDiffPerMinDeltas@10-20,xpDiffPerMinDeltas@0-10,xpDiffPerMinDeltas@10-20
-2020-04-01 00:00:25.461,0.0,4.0,5.0,9.0,85120.0,20031.0,7971.0,16.0,5.8,6.5,410.6,,,,
-2020-03-31 23:18:06.193,1.0,4.0,3.0,11.0,99788.0,22547.0,11470.0,26.0,6.8,5.0,486.3,,,,
-2020-03-31 22:33:42.564,1.0,3.0,3.0,13.0,169527.0,22496.0,12890.0,33.0,7.0,7.5,458.8,0.4,0.3,38.8,-36.3
+,win,kills,deaths,assists,totalDamageDealt,totalDamageTaken,goldEarned,visionScore,creepsPerMinDeltas@0-10,creepsPerMinDeltas@10-20,xpPerMinDeltas@0-10,csDiffPerMinDeltas@0-10,csDiffPerMinDeltas@10-20,xpDiffPerMinDeltas@0-10,xpDiffPerMinDeltas@10-20,queueId,week,player
+1586199549069,0.0,2.0,11.0,10.0,20126.0,30579.0,8904.0,68.0,1.4,1.4,300.4,1.75,-1.5,25.9,-41.35,440.0,2.0,Strucio
+1585692025461,0.0,4.0,5.0,9.0,85120.0,20031.0,7971.0,16.0,5.8,6.5,410.6,,,,,440.0,1.0,Strucio
+1585689486193,1.0,4.0,3.0,11.0,99788.0,22547.0,11470.0,26.0,6.8,5.0,486.3,,,,,440.0,1.0,Strucio
+1585686822564,1.0,3.0,3.0,13.0,169527.0,22496.0,12890.0,33.0,7.0,7.5,458.8,0.4,0.3,38.8,-36.3,440.0,1.0,Strucio

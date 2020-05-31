@@ -9,9 +9,9 @@ import requests
 # Parameters
 summonerName = "Darkonia"
 teamPlayers = ["Sopapiglobo", "Darkonia", "Scσrpiσn", "Blackéyé", "Flokii", "Strucio"]
-APIKey = "RGAPI-8766373a-9f14-45b7-94ae-ccdeafee806a"
+APIKey = "RGAPI-2045c3a3-0d61-40b5-a741-869067293ee1"
 season = "13"
-queueId = "440"
+queueId = ["440", "700"]
 startDate = "28 March, 2020"
 
 
@@ -99,11 +99,14 @@ def requestTeamData(summonerList, APIKey):
 accountId = requestSummonerData(summonerName, APIKey)["accountId"]
 
 # get Matches
-matches = requestMatchByAccountId(accountId, season, queueId, APIKey)
+matchesFlex = requestMatchByAccountId(accountId, season, queueId[0], APIKey)
+matchesClash = requestMatchByAccountId(accountId, season, queueId[1], APIKey)
 
 # create DataFrame
-matches = pd.DataFrame.from_dict(matches["matches"])
-
+matchesFlex = pd.DataFrame.from_dict(matchesFlex["matches"])
+matchesClash = pd.DataFrame.from_dict(matchesClash["matches"])
+matches = pd.concat([matchesFlex, matchesClash])
+matches = matchesFlex
 # Filter by date
 matches = filterMatchesByDate(matches, startDate)
 
@@ -113,3 +116,8 @@ filteredMatches = filterMatches(matches, 5, APIKey)
 # export as pickle
 with open("data/filteredMatches.pickle", "wb") as out_file:
     pickle.dump(filteredMatches, out_file)
+
+name = requestSummonerData(summonerName, APIKey)
+name
+# id = name['accountId']
+# requestMatchByAccountId(id, season, str(0), APIKey)
